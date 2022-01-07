@@ -6,4 +6,12 @@ Mojang in their infinite wisdom make a blocking HTTP request in the render threa
 
 There are no config options, it just works out of the box.
 
-Download: https://adryd.co/chatlagfix/chatlagfix-1.0.0.jar
+### Alternatives
+
+If you use the player blocking feature, this mod by @KosmX optimizes the http request by spawning a thread:  
+https://github.com/KosmX/non-blocking_chat
+
+### Download
+
+Modrinth: https://modrinth.com/mod/chat-lag-fix  
+Direct: https://adryd.co/chatlagfix/chatlagfix-1.0.0.jar
