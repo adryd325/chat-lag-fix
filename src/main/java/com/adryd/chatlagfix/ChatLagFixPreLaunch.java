@@ -3,8 +3,6 @@ package com.adryd.chatlagfix;
 import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
 import net.fabricmc.loader.impl.util.UrlConversionException;
 import net.fabricmc.loader.impl.util.UrlUtil;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -13,8 +11,6 @@ import java.util.Optional;
 
 public class ChatLagFixPreLaunch implements PreLaunchEntrypoint {
     // Mixin to libraries code taken from https://github.com/kb-1000/no-telemetry/blob/main/src/main/java/de/kb1000/notelemetry/NoTelemetry.java
-
-    private static final Logger LOGGER = LogManager.getLogger("chat-lag-fix");
 
     private static final String[] libraryMixinTargets = {
             "com/mojang/authlib/yggdrasil/YggdrasilUserApiService.class"
@@ -43,7 +39,7 @@ public class ChatLagFixPreLaunch implements PreLaunchEntrypoint {
             Method m = classLoader.getClass().getMethod("addURL", URL.class);
             m.setAccessible(true);
             for (String mixinTarget : libraryMixinTargets) {
-                LOGGER.info("added {} to loom", mixinTarget);
+                ChatLagFixMod.LOGGER.info("added {} to loom", mixinTarget);
                 m.invoke(classLoader, getSource(classLoader.getParent().getParent().getParent(), mixinTarget).orElseThrow());
             }
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {

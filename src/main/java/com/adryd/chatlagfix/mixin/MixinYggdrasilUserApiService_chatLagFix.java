@@ -1,5 +1,6 @@
 package com.adryd.chatlagfix.mixin;
 
+import com.adryd.chatlagfix.ChatLagFixMod;
 import com.mojang.authlib.exceptions.MinecraftClientException;
 import com.mojang.authlib.minecraft.client.MinecraftClient;
 import com.mojang.authlib.yggdrasil.YggdrasilUserApiService;
@@ -32,17 +33,21 @@ public abstract class MixinYggdrasilUserApiService_chatLagFix {
 
     @Inject(method = "canMakeBlockListRequest", at = @At("HEAD"), cancellable = true)
     private void dontReFetchBlockList(CallbackInfoReturnable<Boolean> cir) {
-        cir.setReturnValue(this.blockList != null);
+        // ChatLagFixMod.LOGGER.info("YggdrasilUserApiService#canMakeBlockListRequest(): {} fetch block list", this.blockList == null ? "Will" : "Will not");
+        cir.setReturnValue(this.blockList == null);
     }
 
     @Inject(method = "forceFetchBlockList", at = @At("HEAD"), cancellable = true)
     private void safeForceFetchBlockList(CallbackInfoReturnable<Set<UUID>> cir) {
+        // ChatLagFixMod.LOGGER.info("YggdrasilUserApiService#forceFetchBlockList(): Fetching block list");
         // Return an empty set immediately and update the list once the request has finished
         CompletableFuture.runAsync(() -> {
             try {
                 final BlockListResponse response = minecraftClient.get(routeBlocklist, BlockListResponse.class);
+                // ChatLagFixMod.LOGGER.info("YggdrasilUserApiService#forceFetchBlockList(): Block list fetch was successful");
                 this.blockList = response.getBlockedProfiles();
             } catch (final MinecraftClientException ignored) {
+                // ChatLagFixMod.LOGGER.info("YggdrasilUserApiService#forceFetchBlockList(): Block list fetch failed");
                 this.blockList = Set.of(new UUID(0,0));
             }
         });
