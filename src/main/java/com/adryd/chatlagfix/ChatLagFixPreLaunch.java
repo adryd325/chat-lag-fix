@@ -13,7 +13,7 @@ public class ChatLagFixPreLaunch implements PreLaunchEntrypoint {
     // Mixin to libraries code taken from https://github.com/kb-1000/no-telemetry/blob/main/src/main/java/de/kb1000/notelemetry/NoTelemetry.java
 
     private static final String[] libraryMixinTargets = {
-            "com/mojang/authlib/yggdrasil/YggdrasilUserApiService.class"
+            "com/mojang/authlib/yggdrasil/YggdrasilSocialInteractionsService.class"
     };
 
     private static Optional<URL> getSource(ClassLoader loader, String filename) {

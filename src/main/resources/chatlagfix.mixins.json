@@ -4,7 +4,7 @@
   "package": "com.adryd.chatlagfix.mixin",
   "compatibilityLevel": "JAVA_16",
   "client": [
-    "MixinYggdrasilUserApiService_chatLagFix"
+    "MixinYggdrasilSocialInteractionsService_chatLagFix"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -4,7 +4,6 @@ import com.adryd.chatlagfix.ChatLagFixMod;
 import com.mojang.authlib.exceptions.MinecraftClientException;
 import com.mojang.authlib.minecraft.client.MinecraftClient;
 import com.mojang.authlib.yggdrasil.YggdrasilSocialInteractionsService;
-import com.mojang.authlib.yggdrasil.YggdrasilUserApiService;
 import com.mojang.authlib.yggdrasil.response.BlockListResponse;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -33,8 +32,13 @@ public abstract class MixinYggdrasilSocialInteractionsService_chatLagFix {
     private Set<UUID> blockList;
 
 
-    @Inject(method = "forceFetchBlockList", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "fetchBlockList", at = @At("HEAD"), cancellable = true)
     private void safeForceFetchBlockList(CallbackInfoReturnable<Set<UUID>> cir) {
+        // Don't fetch block list multiple times
+        if (this.blockList != null) {
+            cir.setReturnValue(this.blockList);
+            return;
+        }
         ChatLagFixMod.LOGGER.debug("YggdrasilUserApiService#forceFetchBlockList(): Fetching block list");
         // Return an empty set immediately and update the list once the request has finished
         CompletableFuture.runAsync(() -> {
@@ -44,7 +48,7 @@ public abstract class MixinYggdrasilSocialInteractionsService_chatLagFix {
                 this.blockList = response.getBlockedProfiles();
             } catch (final MinecraftClientException ignored) {
                 ChatLagFixMod.LOGGER.debug("YggdrasilUserApiService#forceFetchBlockList(): Block list fetch failed");
-                this.blockList = Set.of(new UUID(0,0));
+                this.blockList = Set.of(new UUID(0, 0));
             }
         });
         cir.setReturnValue(Set.of());
