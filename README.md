@@ -9,8 +9,9 @@ Fixes Minecraft client lag from receiving chat messages
 If you'd like to see what happens for yourself, check out com.mojang.authlib.yggdrasil.YggdrasilUserApiService, remember that these methods get called on the render thread when receiving a chat message.
 <br><br>
 **Downloads**<br>
-Modrinth: https://modrinth.com/mod/chat-lag-fix<br>
-GitHub Releases: https://github.com/adryd325/chat-lag-fix/releases
+Modrinth: https://modrinth.com/mod/chat-lag-fix <br>
+GitHub Releases: https://github.com/adryd325/chat-lag-fix/releases <br>
+Curseforge: The site has such awful UX and is so slow that I can't be bothered. 
 <br><br>
 **Development is split into 3 branches**  
 **1.16**: https://github.com/adryd325/chat-lag-fix/tree/1.16  
