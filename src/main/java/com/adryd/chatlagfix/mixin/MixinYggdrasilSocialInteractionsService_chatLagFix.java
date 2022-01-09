@@ -1,6 +1,7 @@
 package com.adryd.chatlagfix.mixin;
 
 import com.adryd.chatlagfix.ChatLagFixMod;
+import com.mojang.authlib.exceptions.AuthenticationException;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
 import com.mojang.authlib.yggdrasil.YggdrasilSocialInteractionsService;
 import com.mojang.authlib.yggdrasil.response.BlockListResponse;
@@ -48,16 +49,21 @@ public abstract class MixinYggdrasilSocialInteractionsService_chatLagFix {
             return;
         }
         // Return an empty set immediately and update the list once the request has finished
-        CompletableFuture.runAsync(() -> {
-            final BlockListResponse response = ((IMixinYggdrasilAuthenticationService_makeRequestInvoker) authenticationService).invokeMakeRequest(routeBlocklist, null, BlockListResponse.class, "Bearer " + accessToken);
-            if (response == null) {
-                ChatLagFixMod.LOGGER.debug("YggdrasilUserApiService#fetchBlockList(): Block list fetch was empty");
-                this.blockList = Collections.emptySet();
-                return;
+        // This should only create one thread
+        new Thread(() -> {
+            try {
+                final BlockListResponse response = ((IMixinYggdrasilAuthenticationService_makeRequestInvoker) authenticationService).invokeMakeRequest(routeBlocklist, null, BlockListResponse.class, "Bearer " + accessToken);
+                if (response == null) {
+                    ChatLagFixMod.LOGGER.debug("YggdrasilUserApiService#fetchBlockList(): Block list fetch was empty");
+                    this.blockList = emptySet();
+                    return;
+                }
+                ChatLagFixMod.LOGGER.debug("YggdrasilUserApiService#fetchBlockList(): Block list fetch was successful");
+                this.blockList = response.getBlockedProfiles();
+            } catch (AuthenticationException e) {
+                ChatLagFixMod.LOGGER.debug("YggdrasilUserApiService#fetchBlockList(): Block list fetch failed");
             }
-            ChatLagFixMod.LOGGER.debug("YggdrasilUserApiService#fetchBlockList(): Block list was successful");
-            this.blockList = response.getBlockedProfiles();
-        });
+        }).start();
         cir.setReturnValue(Collections.emptySet());
     }
 }
