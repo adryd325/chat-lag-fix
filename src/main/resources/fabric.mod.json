@@ -17,7 +17,11 @@
   "icon": "assets/chatlagfix/icon.png",
 
   "environment": "*",
-  "entrypoints": {},
+  "entrypoints": {
+    "preLaunch": [
+      "com.adryd.chatlagfix.ChatLagFixPreLaunch"
+    ]
+  },
   "mixins": [
     "chatlagfix.mixins.json"
   ],

@@ -3,10 +3,8 @@
   "minVersion": "0.8",
   "package": "com.adryd.chatlagfix.mixin",
   "compatibilityLevel": "JAVA_16",
-  "mixins": [
-  ],
   "client": [
-    "MixinMinecraftClient_chatLagFix"
+    "MixinYggdrasilUserApiService_chatLagFix"
   ],
   "injectors": {
     "defaultRequire": 1
