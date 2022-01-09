@@ -3,6 +3,7 @@ package com.adryd.chatlagfix.mixin;
 import com.adryd.chatlagfix.ChatLagFixMod;
 import com.mojang.authlib.exceptions.MinecraftClientException;
 import com.mojang.authlib.minecraft.client.MinecraftClient;
+import com.mojang.authlib.yggdrasil.YggdrasilSocialInteractionsService;
 import com.mojang.authlib.yggdrasil.YggdrasilUserApiService;
 import com.mojang.authlib.yggdrasil.response.BlockListResponse;
 import org.spongepowered.asm.mixin.Final;
@@ -17,8 +18,8 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
-@Mixin(value = YggdrasilUserApiService.class, remap = false)
-public abstract class MixinYggdrasilUserApiService_chatLagFix {
+@Mixin(value = YggdrasilSocialInteractionsService.class, remap = false)
+public abstract class MixinYggdrasilSocialInteractionsService_chatLagFix {
 
     @Final
     @Shadow
@@ -31,11 +32,6 @@ public abstract class MixinYggdrasilUserApiService_chatLagFix {
     @Shadow
     private Set<UUID> blockList;
 
-    @Inject(method = "canMakeBlockListRequest", at = @At("HEAD"), cancellable = true)
-    private void dontReFetchBlockList(CallbackInfoReturnable<Boolean> cir) {
-        ChatLagFixMod.LOGGER.debug("YggdrasilUserApiService#canMakeBlockListRequest(): {} fetch block list", this.blockList == null ? "Will" : "Will not");
-        cir.setReturnValue(this.blockList == null);
-    }
 
     @Inject(method = "forceFetchBlockList", at = @At("HEAD"), cancellable = true)
     private void safeForceFetchBlockList(CallbackInfoReturnable<Set<UUID>> cir) {
