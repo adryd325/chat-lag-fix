@@ -6,7 +6,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -21,7 +20,7 @@ public abstract class MixinYggdrasilSocialInteractionsService_chatLagFix {
 
     @Redirect(method = "isBlockedPlayer", at = @At(value = "INVOKE", target = "Lcom/mojang/authlib/yggdrasil/YggdrasilSocialInteractionsService;fetchBlockList()Ljava/util/Set;"))
     private Set<UUID> asyncFetchBlockList(YggdrasilSocialInteractionsService service) {
-        CompletableFuture.runAsync(() -> this.blockList.addAll(fetchBlockList()));
-        return new HashSet<>();
+        CompletableFuture.runAsync(() -> this.blockList = fetchBlockList());
+        return null;
     }
 }
