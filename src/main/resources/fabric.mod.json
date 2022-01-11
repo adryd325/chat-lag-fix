@@ -6,7 +6,8 @@
   "name": "Chat lag fix",
   "description": "Fixes Minecraft client lag from receiving chat messages, at the expense of not being able to block players in chat.",
   "authors": [
-    "adryd"
+    "adryd",
+    "Crec0"
   ],
   "contact": {
     "homepage": "https://github.com/adryd325/chat-lag-fix",
@@ -28,7 +29,7 @@
 
   "depends": {
     "fabricloader": ">=0.11.3",
-    "minecraft": ["1.16.4", "1.16.5"],
+    "minecraft": ["~1.16", "~1.17"],
     "java": ">=8"
   }
 }
