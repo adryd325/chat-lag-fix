@@ -2,9 +2,13 @@
 
 Fixes Minecraft client lag from receiving chat messages
 <br>
-### YOU LIKELY DO NOT NEED THIS MOD ANYMORE
+### YOU DO NOT NEED THIS MOD ANYMORE ON 1.18
 
 **Mojang has fixed the bug in their API that was causing it to return an error instead of an empty list. Minecraft will fetch the block-list once when joining the world. This mod may still improve world loading times by the time it takes to make that HTTP request; especially if you have a slow internet connection.**
+
+This comment by a Mojang employee confirms that the bug was fixed: https://bugs.mojang.com/browse/WEB-5587?focusedCommentId=1134973&page=com.atlassian.jira.plugin.system.issuetabpanels%3Acomment-tabpanel#comment-1134973
+
+This mod still affects 1.17 and 1.16 but only on the first chat message received: https://bugs.mojang.com/browse/MC-218167
 
 **Technical Details**: When receiving a chat message, Minecraft sends a HTTP request in the render thread to check your player block list. The current frame does not finish rendering until this request has finished, causing a lag spike. This mod lets chat messages through until a block-list can be fetched.
 
@@ -57,9 +61,8 @@ GitHub Releases: https://github.com/adryd325/chat-lag-fix/releases <br>
 Curseforge: The site has such awful UX and is so slow that I can't be bothered.  
 
 **Development is split into 3 branches:**  
-**1.16**: https://github.com/adryd325/chat-lag-fix/tree/1.16  
-**1.17**: https://github.com/adryd325/chat-lag-fix/tree/1.17  
-**1.18**: https://github.com/adryd325/chat-lag-fix/tree/1.18
+**1.16/1.17**: https://github.com/adryd325/chat-lag-fix/tree/1.16  
+~~**1.18**: https://github.com/adryd325/chat-lag-fix/tree/1.18~~
 <details>
   <summary>GIF Example of the bug showing that it occurs in vanilla as well as modded environments</summary>
   <br>
